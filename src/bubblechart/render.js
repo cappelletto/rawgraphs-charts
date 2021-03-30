@@ -42,6 +42,8 @@ export function render(
   const chartWidth = width - margin.left - margin.right
   const chartHeight = height - margin.top - margin.bottom
 
+  console.log(data)
+
   // x scale
   const xDomain = xOrigin
     ? [0, d3.max(data, (d) => d.x)]
@@ -155,7 +157,20 @@ export function render(
     )
     .join('g')
 
-  bubbles
+  //create clippath
+  const clipPaths = d3
+    .select(svgNode)
+    .append('defs')
+    .selectAll('clipPath')
+    .data(
+      data.sort((a, b) => {
+        const sortValueA = mapping.size.value ? size(a.size) : maxRadius
+        const sortValueB = mapping.size.value ? size(b.size) : maxRadius
+        return sortValueB - sortValueA
+      })
+    )
+    .join('clipPath')
+    .attr('id', (d, i) => 'clip_' + i)
     .append('circle')
     .attr('cx', (d) => x(d.x))
     .attr('cy', (d) => y(d.y))
@@ -165,7 +180,6 @@ export function render(
     .attr('r', (d) => {
       return mapping.size.value ? size(d.size) : maxRadius
     })
-    .attr('stroke', showStroke ? 'white' : 'none')
 
   if (showPoints) {
     bubbles
@@ -175,6 +189,21 @@ export function render(
       .attr('fill', 'black')
       .attr('r', pointsRadius)
   }
+
+  // test with iamges
+
+  const images = bubbles
+    .append('svg:image')
+    .attr('x', (d) => x(d.x) - (mapping.size.value ? size(d.size) : maxRadius))
+    .attr('y', (d) => y(d.y) - (mapping.size.value ? size(d.size) : maxRadius))
+    .attr('width', (d) =>
+      mapping.size.value ? size(d.size) * 2 : maxRadius * 2
+    )
+    .attr('height', (d) =>
+      mapping.size.value ? size(d.size) * 2 : maxRadius * 2
+    )
+    .attr('xlink:href', (d) => d.image) // we should encode as base64
+    .attr('clip-path', (d, i) => 'url(#clip_' + i + ')')
 
   const labelsLayer = svg.append('g').attr('id', 'labels')
 

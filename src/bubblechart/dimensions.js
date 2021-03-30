@@ -18,6 +18,12 @@ export const dimensions = [
     required: false,
   },
   {
+    id: 'image',
+    name: 'Image URL',
+    validTypes: ['string'],
+    required: false,
+  },
+  {
     id: 'color',
     name: 'Color',
     validTypes: ['number', 'date', 'string'],
