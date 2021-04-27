@@ -3,28 +3,28 @@ export const visualOptions = {
     type: 'number',
     label: 'Margin (top)',
     default: 30,
-    group: 'margins',
+    group: 'artboard',
   },
 
   marginRight: {
     type: 'number',
     label: 'Margin (right)',
     default: 20,
-    group: 'margins',
+    group: 'artboard',
   },
 
   marginBottom: {
     type: 'number',
     label: 'Margin (bottom)',
     default: 0,
-    group: 'margins',
+    group: 'artboard',
   },
 
   marginLeft: {
     type: 'number',
     label: 'Margin (left)',
     default: 20,
-    group: 'margins',
+    group: 'artboard',
   },
 
   showDots: {
@@ -53,7 +53,7 @@ export const visualOptions = {
 
   interpolation: {
     type: 'text',
-    label: 'Interpolation',
+    label: 'Curve type',
     default: 'Catmull–Rom',
     options: ['Basis', 'Cardinal', 'Catmull–Rom', 'Linear'],
     group: 'chart',

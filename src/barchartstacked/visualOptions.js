@@ -3,28 +3,28 @@ export const visualOptions = {
     type: 'number',
     label: 'Margin (top)',
     default: 20,
-    group: 'margins',
+    group: 'artboard',
   },
 
   marginRight: {
     type: 'number',
     label: 'Margin (right)',
     default: 10,
-    group: 'margins',
+    group: 'artboard',
   },
 
   marginBottom: {
     type: 'number',
     label: 'Margin (bottom)',
     default: 20,
-    group: 'margins',
+    group: 'artboard',
   },
 
   marginLeft: {
     type: 'number',
     label: 'Margin (left)',
-    default: 40,
-    group: 'margins',
+    default: 50,
+    group: 'artboard',
   },
 
   showLegend: {
@@ -50,7 +50,7 @@ export const visualOptions = {
 
   stacksPadding: {
     type: 'number',
-    label: 'Padding between stacks (px)',
+    label: 'Padding between stacks',
     default: 1,
     group: 'chart',
   },

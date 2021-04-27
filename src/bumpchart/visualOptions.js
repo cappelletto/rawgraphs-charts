@@ -3,28 +3,28 @@ export const visualOptions = {
     type: 'number',
     label: 'Margin (top)',
     default: 20,
-    group: 'margins',
+    group: 'artboard',
   },
 
   marginRight: {
     type: 'number',
     label: 'Margin (right)',
     default: 10,
-    group: 'margins',
+    group: 'artboard',
   },
 
   marginBottom: {
     type: 'number',
     label: 'Margin (bottom)',
     default: 20,
-    group: 'margins',
+    group: 'artboard',
   },
 
   marginLeft: {
     type: 'number',
     label: 'Margin (left)',
     default: 10,
-    group: 'margins',
+    group: 'artboard',
   },
 
   showLegend: {
@@ -50,7 +50,7 @@ export const visualOptions = {
 
   interpolation: {
     type: 'text',
-    label: 'Curves interpolation',
+    label: 'Curves type',
     default: 'curveMonotoneX',
     options: [
       { label: 'Basis', value: 'curveBasis' },
@@ -72,9 +72,7 @@ export const visualOptions = {
     group: 'chart',
     options: [
       { label: 'Expand', value: 'stackOffsetExpand' },
-      // { label: 'Diverging', value: 'stackOffsetDiverging' },
       { label: 'Silhouette', value: 'stackOffsetSilhouette' },
-      { label: 'Wiggle', value: 'stackOffsetWiggle' },
       { label: 'None', value: 'stackOffsetNone' },
     ],
     default: 'stackOffsetNone',
@@ -92,11 +90,14 @@ export const visualOptions = {
     label: 'Show Y axis',
     default: false,
     group: 'chart',
+    disabled: {
+      streamsOffset: 'stackOffsetSilhouette',
+    },
   },
 
   useSameScale: {
     type: 'boolean',
-    label: 'Use same y scale',
+    label: 'Use same scale',
     default: true,
     group: 'series',
   },
@@ -155,7 +156,7 @@ export const visualOptions = {
 
   labelsType: {
     type: 'text',
-    label: 'Label placement',
+    label: 'Labels position',
     group: 'Labels',
     options: ['On path', 'On point'],
     default: 'On point',

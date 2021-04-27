@@ -23,7 +23,7 @@ export const visualOptions = {
   marginLeft: {
     type: 'number',
     label: 'Margin (left)',
-    default: 100,
+    default: 50,
     group: 'artboard',
   },
 
@@ -84,7 +84,7 @@ export const visualOptions = {
 
   alignLabels: {
     type: 'boolean',
-    label: 'Align labels to group',
+    label: 'Labels position',
     default: false,
     group: 'labels',
   },

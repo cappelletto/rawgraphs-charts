@@ -23,7 +23,7 @@ export const visualOptions = {
   marginLeft: {
     type: 'number',
     label: 'Margin (left)',
-    default: 100,
+    default: 50,
     group: 'artboard',
   },
   showLegend: {
@@ -59,7 +59,7 @@ export const visualOptions = {
 
   padding: {
     type: 'number',
-    label: 'Space between rows and lines',
+    label: 'Padding',
     default: 2,
     group: 'chart',
   },

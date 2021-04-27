@@ -1,10 +1,30 @@
 ## upcoming
 
-New features:
+- Fixed dimensions and visual options names
+
+## v1.0.0-beta.18
+
+#### New features:
 
 - _Voronoi diagram_: added chart
+- _Horizon graph_: added chart
+- _Sunburst_: added `auto hide labels` visual option
+- _Sunburst_: possible to define style for hierarchical labels
+- _Sunburst_: If no labels are mapped by default is shown the hierarchical label
+- _Circle packing_: possible to put hierarchy labels on path or on point
 
-Bugfixing:
+#### Bugfixing:
+
+- _bump chart_: removed unused visual variable `sortStreamsBy`
+- Margins are now in the `artboard` group for all the charts
+
+#### Changes:
+
+- _beeswarm diagram_: `series` dimension is now called `Y Axis`
+- _bump chart_: removed unused options in `streamsOffset`
+- _bump chart_: vertical axis disabled when `stack` is `stackOffsetSilhouette`
+- _treemap_: removed unused `drawHierarchy` visual option
+- increased default left margin in all charts to `50px`
 
 ## v1.0.0-beta.17
 
