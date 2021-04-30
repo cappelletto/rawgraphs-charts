@@ -167,32 +167,20 @@ export function render(
 
   // test with iamges
 
-  const imgs = Promise.all(data.map((row) => getBase64FromUrl(row.image))).then(
-    (values) => {
-      console.log(values)
-
-      bubbles
-        .append('svg:image')
-        .attr(
-          'x',
-          (d) => x(d.x) - (mapping.size.value ? size(d.size) : maxRadius)
-        )
-        .attr(
-          'y',
-          (d) => y(d.y) - (mapping.size.value ? size(d.size) : maxRadius)
-        )
-        .attr('width', (d) =>
-          mapping.size.value ? size(d.size) * 2 : maxRadius * 2
-        )
-        .attr('height', (d) =>
-          mapping.size.value ? size(d.size) * 2 : maxRadius * 2
-        )
-        .attr('xlink:href', (d, i) => {
-          //console.log(getBase64Image(d.image))
-          return values[i]
-        }) // we should encode as base64
-    }
-  )
+  bubbles
+    .append('svg:image')
+    .attr('x', (d) => x(d.x) - (mapping.size.value ? size(d.size) : maxRadius))
+    .attr('y', (d) => y(d.y) - (mapping.size.value ? size(d.size) : maxRadius))
+    .attr('width', (d) =>
+      mapping.size.value ? size(d.size) * 2 : maxRadius * 2
+    )
+    .attr('height', (d) =>
+      mapping.size.value ? size(d.size) * 2 : maxRadius * 2
+    )
+    .attr('xlink:href', (d, i) => {
+      //console.log(getBase64Image(d.image))
+      return values[i]
+    }) // we should encode as base64
 
   const labelsLayer = svg.append('g').attr('id', 'labels')
 
@@ -275,10 +263,10 @@ const getBase64FromUrl = async (url) => {
       var image = new Image()
       image.src = reader.result
 
-      image.onload = function () {
-        // access image size here
-        console.log(this.width)
-      }
+      // image.onload = function () {
+      //   // access image size here
+      //   console.log(this.width)
+      // }
 
       const base64data = reader.result
       resolve(base64data)
