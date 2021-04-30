@@ -1,6 +1,7 @@
 import * as d3 from 'd3'
 import { legend, dateFormats, labelsOcclusion } from '@rawgraphs/rawgraphs-core'
 import '../d3-styles.js'
+import 'regenerator-runtime/runtime'
 
 export function render(
   svgNode,
@@ -41,8 +42,6 @@ export function render(
 
   const chartWidth = width - margin.left - margin.right
   const chartHeight = height - margin.top - margin.bottom
-
-  console.log(data)
 
   // x scale
   const xDomain = xOrigin
@@ -157,30 +156,6 @@ export function render(
     )
     .join('g')
 
-  //create clippath
-  const clipPaths = d3
-    .select(svgNode)
-    .append('defs')
-    .selectAll('clipPath')
-    .data(
-      data.sort((a, b) => {
-        const sortValueA = mapping.size.value ? size(a.size) : maxRadius
-        const sortValueB = mapping.size.value ? size(b.size) : maxRadius
-        return sortValueB - sortValueA
-      })
-    )
-    .join('clipPath')
-    .attr('id', (d, i) => 'clip_' + i)
-    .append('circle')
-    .attr('cx', (d) => x(d.x))
-    .attr('cy', (d) => y(d.y))
-    .attr('fill', (d) => {
-      return colorScale(d.color)
-    })
-    .attr('r', (d) => {
-      return mapping.size.value ? size(d.size) : maxRadius
-    })
-
   if (showPoints) {
     bubbles
       .append('circle')
@@ -192,18 +167,32 @@ export function render(
 
   // test with iamges
 
-  const images = bubbles
-    .append('svg:image')
-    .attr('x', (d) => x(d.x) - (mapping.size.value ? size(d.size) : maxRadius))
-    .attr('y', (d) => y(d.y) - (mapping.size.value ? size(d.size) : maxRadius))
-    .attr('width', (d) =>
-      mapping.size.value ? size(d.size) * 2 : maxRadius * 2
-    )
-    .attr('height', (d) =>
-      mapping.size.value ? size(d.size) * 2 : maxRadius * 2
-    )
-    .attr('xlink:href', (d) => d.image) // we should encode as base64
-    .attr('clip-path', (d, i) => 'url(#clip_' + i + ')')
+  const imgs = Promise.all(data.map((row) => getBase64FromUrl(row.image))).then(
+    (values) => {
+      console.log(values)
+
+      bubbles
+        .append('svg:image')
+        .attr(
+          'x',
+          (d) => x(d.x) - (mapping.size.value ? size(d.size) : maxRadius)
+        )
+        .attr(
+          'y',
+          (d) => y(d.y) - (mapping.size.value ? size(d.size) : maxRadius)
+        )
+        .attr('width', (d) =>
+          mapping.size.value ? size(d.size) * 2 : maxRadius * 2
+        )
+        .attr('height', (d) =>
+          mapping.size.value ? size(d.size) * 2 : maxRadius * 2
+        )
+        .attr('xlink:href', (d, i) => {
+          //console.log(getBase64Image(d.image))
+          return values[i]
+        }) // we should encode as base64
+    }
+  )
 
   const labelsLayer = svg.append('g').attr('id', 'labels')
 
@@ -274,4 +263,25 @@ export function render(
 
     legendLayer.call(chartLegend)
   }
+}
+
+const getBase64FromUrl = async (url) => {
+  const data = await fetch(url)
+  const blob = await data.blob()
+  return new Promise((resolve) => {
+    const reader = new FileReader()
+    reader.readAsDataURL(blob)
+    reader.onloadend = () => {
+      var image = new Image()
+      image.src = reader.result
+
+      image.onload = function () {
+        // access image size here
+        console.log(this.width)
+      }
+
+      const base64data = reader.result
+      resolve(base64data)
+    }
+  })
 }
