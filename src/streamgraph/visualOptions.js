@@ -97,7 +97,7 @@ export const visualOptions = {
 
   streamsPadding: {
     type: 'number',
-    label: 'Padding between streams',
+    label: 'Padding',
     default: 1,
     group: 'chart',
   },
@@ -163,7 +163,7 @@ export const visualOptions = {
 
   showLabels: {
     type: 'boolean',
-    label: 'show streams labels',
+    label: 'Show streams labels',
     default: true,
     group: 'Labels',
   },

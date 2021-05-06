@@ -24,9 +24,9 @@ export function render(
     legendWidth,
     // visual model options
     showDots,
-    dotsRadius,
+    dotsDiameter,
     interpolation,
-    innerRadius,
+    innerDiameter,
     fillOpacity,
     //labels
     labelsPadding,
@@ -124,6 +124,8 @@ export function render(
     .round(false)
 
   const maxValue = d3.max(data, (d) => d.value)
+
+  const innerRadius = innerDiameter / 2
 
   const outerRadius = d3.min([
     (griddingData[0].width - margin.right - margin.left) / 2,
@@ -278,7 +280,7 @@ export function render(
         .append('circle')
         .attr('cx', (d) => Math.cos(radialScale(d.axes)) * axesScale(d.value))
         .attr('cy', (d) => Math.sin(radialScale(d.axes)) * axesScale(d.value))
-        .attr('r', dotsRadius)
+        .attr('r', dotsDiameter / 2)
         .attr('stroke', 'none')
         .attr('fill', (d) => colorScale(d.color))
     }

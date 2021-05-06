@@ -50,15 +50,15 @@ export const visualOptions = {
 
   showPoints: {
     type: 'boolean',
-    label: 'Show dots',
+    label: 'Show dots on data values',
     default: false,
     group: 'chart',
   },
 
-  pointsRadius: {
+  dotsDiameter: {
     type: 'number',
-    label: 'Dots radius',
-    default: 3,
+    label: 'Dots diameter',
+    default: 2,
     group: 'chart',
     disabled: {
       showPoints: false,
@@ -127,7 +127,7 @@ export const visualOptions = {
 
   showLabels: {
     type: 'boolean',
-    label: 'Show Labels',
+    label: 'Show labels',
     default: true,
     group: 'labels',
   },
