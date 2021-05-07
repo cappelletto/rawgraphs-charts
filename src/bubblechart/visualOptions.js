@@ -73,12 +73,12 @@ export const visualOptions = {
     requiredDimensions: ['x', 'y'],
   },
 
-  showStroke: {
-    type: 'boolean',
-    label: 'Show stroke',
-    default: false,
+  strokeWidth: {
+    type: 'number',
+    label: 'Stroke width',
+    default: 1,
     group: 'chart',
-    requiredDimensions: ['x', 'y'],
+    requiredDimensions: ['color'],
   },
 
   showPoints: {

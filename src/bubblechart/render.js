@@ -18,7 +18,7 @@ export function render(
     xOrigin,
     yOrigin,
     maxDiameter,
-    showStroke,
+    strokeWidth,
     showPoints,
     dotsDiameter,
     showLegend,
@@ -157,20 +157,13 @@ export function render(
     )
     .join('g')
 
-  if (showPoints) {
-    bubbles
-      .append('circle')
-      .attr('cx', (d) => x(d.x))
-      .attr('cy', (d) => y(d.y))
-      .attr('fill', 'black')
-      .attr('r', dotsDiameter / 2)
-  }
-
-  // test with iamges
-
+  // wait util all the images are loaded
   const imgs = Promise.all(data.map((row) => getBase64FromUrl(row.image))).then(
-    (values) => {
-      console.log(values)
+    (images) => {
+      //update data adding all the images
+      data.forEach((d, i) => {
+        d.image = images[i]
+      })
 
       bubbles
         .append('svg:image')
@@ -188,10 +181,51 @@ export function render(
         .attr('height', (d) =>
           mapping.size.value ? size(d.size) * 2 : maxRadius * 2
         )
-        .attr('xlink:href', (d, i) => {
-          //console.log(getBase64Image(d.image))
-          return values[i]
-        }) // we should encode as base64
+        .attr('xlink:href', (d) => {
+          // return the base64 image
+          return d.image.base64data
+        })
+
+      if (mapping.color.value) {
+        bubbles
+          .append('rect')
+          .attr(
+            'x',
+            (d) =>
+              x(d.x) -
+              d.image.wRatio * (mapping.size.value ? size(d.size) : maxRadius)
+          )
+          .attr(
+            'y',
+            (d) =>
+              y(d.y) -
+              d.image.hRatio * (mapping.size.value ? size(d.size) : maxRadius)
+          )
+          .attr(
+            'width',
+            (d) =>
+              d.image.wRatio *
+              (mapping.size.value ? size(d.size) * 2 : maxRadius * 2)
+          )
+          .attr(
+            'height',
+            (d) =>
+              d.image.hRatio *
+              (mapping.size.value ? size(d.size) * 2 : maxRadius * 2)
+          )
+          .attr('fill', 'none')
+          .attr('stroke', (d) => colorScale(d.color))
+          .attr('stroke-width', strokeWidth)
+      }
+
+      if (showPoints) {
+        bubbles
+          .append('circle')
+          .attr('cx', (d) => x(d.x))
+          .attr('cy', (d) => y(d.y))
+          .attr('fill', 'black')
+          .attr('r', dotsDiameter / 2)
+      }
     }
   )
 
@@ -267,7 +301,7 @@ export function render(
 }
 
 const getBase64FromUrl = async (url) => {
-  const data = await fetch(url)
+  const data = await fetch('https://wikimedia-cors.herokuapp.com/' + url)
   const blob = await data.blob()
   return new Promise((resolve) => {
     const reader = new FileReader()
@@ -278,11 +312,17 @@ const getBase64FromUrl = async (url) => {
 
       image.onload = function () {
         // access image size here
-        console.log(this.width)
+        const maxDim = d3.max([this.width, this.height])
+        resolve({
+          base64data: reader.result,
+          width: this.width,
+          height: this.height,
+          wRatio: this.width / maxDim,
+          hRatio: this.height / maxDim,
+        })
       }
 
       const base64data = reader.result
-      resolve(base64data)
     }
   })
 }
