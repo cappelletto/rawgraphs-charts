@@ -34,6 +34,13 @@ export const visualOptions = {
     group: 'artboard',
   },
 
+  logScale: {
+    type: 'boolean',
+    label: 'Logarithmic scale',
+    default: false,
+    group: 'artboard',
+  },
+
   legendWidth: {
     type: 'number',
     label: 'Legend width',
@@ -66,6 +73,13 @@ export const visualOptions = {
     type: 'number',
     label: 'Padding',
     default: 1,
+    group: 'chart',
+  },
+
+  verticalOffset: {
+    type: 'number',
+    label: 'Vertical offset',
+    default: 0,
     group: 'chart',
   },
 

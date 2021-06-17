@@ -22,6 +22,8 @@ export function render(
     marginLeft,
     // legends
     showLegend,
+    logScale,       // added visualOption to switch between linear and logarithmic scales
+    verticalOffset, // controls the vertical position data labels
     legendWidth,
     // chart options
     minDiameter,
@@ -79,7 +81,13 @@ export function render(
 
   switch (mapping.xValue.dataType.type) {
     case 'number':
-      xScale = d3.scaleLinear().domain(xDomain).nice().range([0, chartWidth])
+      // @WARNING: modified in local copy
+      if (logScale){
+        xScale = d3.scaleLog().domain(xDomain).nice().range([0, chartWidth])
+      }
+      else{
+        xScale = d3.scaleLinear().domain(xDomain).nice().range([0, chartWidth])
+      }
       break
     case 'date':
       xScale = d3.scaleTime().domain(xDomain).nice().range([0, chartWidth])
@@ -258,7 +266,7 @@ export function render(
   labelsLayer.selectAll('text').call((sel) => {
     return sel.attr('transform', function (d) {
       const height = sel.node().getBBox().height
-      return `translate(0,${-height / 2})`
+      return `translate(0,${-height / 2 - verticalOffset})`
     })
   })
 
